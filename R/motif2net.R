@@ -1,5 +1,5 @@
 #' @export
-motif2net <- function(target_motif_distribution, distribution_type, six_node = FALSE, rows = NULL, columns = NULL, connectance = NULL, steps = 1000, iterations_at_each_temp = 1, alpha = 0.01){
+motif2net <- function(target_motif_distribution, distribution_type, six_node = FALSE, rows = NULL, columns = NULL, connectance = NULL, steps = 1000, iterations_at_each_temp = 1, alpha = 0.99){
   # argument checks
   if(!length(target_motif_distribution) %in% c(17,44)){stop("target_motif_distribution must be of length 17 (if only considering up to five node motifs) or 44 (if considering up to six node motifs)")}
   if(length(target_motif_distribution) == 17 & six_node == TRUE){stop("target_motif_distribution must be of length 44 if six_node = TRUE because there are 44 motifs up to six nodes. Either change the length of target_motif_distribution or set six_node = FALSE")}
