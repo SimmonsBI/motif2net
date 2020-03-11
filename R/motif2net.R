@@ -1,6 +1,7 @@
 #' @export
 motif2net <- function(target_motif_distribution, distribution_type, rows = NULL, columns = NULL, connectance = NULL, steps = 1000, iterations_at_each_temp = 1, alpha = 0.99){
   # argument checks
+  if(!(inherits(target_motif_distribution, "numeric") | inherits(target_motif_distribution, "integer"))){stop("'target_motif_distribution' must be a numeric vector containing raw or normalised motif frequencies")}
   if(!length(target_motif_distribution) %in% c(17,44)){stop("target_motif_distribution must be of length 17 (if only considering up to five node motifs) or 44 (if considering up to six node motifs)")}
   six_node <- ifelse(length(target_motif_distribution) == 44, yes = TRUE, no = FALSE)
   if(length(target_motif_distribution) == 17 & six_node == TRUE){stop("target_motif_distribution must be of length 44 if six_node = TRUE because there are 44 motifs up to six nodes. Either change the length of target_motif_distribution or set six_node = FALSE")}
@@ -10,6 +11,18 @@ motif2net <- function(target_motif_distribution, distribution_type, rows = NULL,
   if(distribution_type == "normalise_sum" & (sum(target_motif_distribution) != 1)){stop("When distribution_type = 'normalise_sum' elements of target_motif_distribution must sum to 1")}
   if(distribution_type == "normalise_sizeclass" & sizeclass_check(target_motif_distribution) == FALSE){stop("When distribution_type = 'normalise_sizeclass' elements of target_motif_distribution must sum to 1 within each motif size class")}
   if(distribution_type == "normalise_levelsize" & levelsize_check(target_motif_distribution) == FALSE){stop("When distribution_type = 'normalise_levelsize' elements of target_motif_distribution must sum to 1 within each motif levelsize class (a group of motifs with a given number of nodes in the top level and the bottom level)")}
+  if(!is.null(rows)){
+    if(!inherits(rows, "integer")){stop("'rows' must be an integer")}
+  }
+  if(!is.null(columns)){
+    if(!inherits(columns, "integer")){stop("'columns' must be an integer")}
+  }
+  if(!is.null(connectance)){
+    if(!inherits(rows, "numeric")){stop("'connectance' must be numeric")}
+  }
+  if(!inherits(steps, "numeric")){stop("'steps' must be numeric")}
+  if(!inherits(iterations_at_each_temp, "numeric")){stop("'iterations_at_each_temp' must be numeric")}
+  if(!inherits(alpha, "numeric")){stop("'alpha' must be numeric")}
   # run analysis
   M <- generate_matrix_initial(rows = rows, columns = columns, connectance = connectance)$M
   available_mutations <- 1:7
