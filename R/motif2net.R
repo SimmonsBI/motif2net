@@ -18,7 +18,7 @@ motif2net <- function(target_motif_distribution, distribution_type, rows = NULL,
     if(!inherits(columns, "integer")){stop("'columns' must be an integer")}
   }
   if(!is.null(connectance)){
-    if(!inherits(rows, "numeric")){stop("'connectance' must be numeric")}
+    if(!inherits(connectance, "numeric")){stop("'connectance' must be numeric")}
   }
   if(!inherits(steps, "numeric")){stop("'steps' must be numeric")}
   if(!inherits(iterations_at_each_temp, "numeric")){stop("'iterations_at_each_temp' must be numeric")}
