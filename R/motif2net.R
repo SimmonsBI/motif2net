@@ -12,10 +12,10 @@ motif2net <- function(target_motif_distribution, distribution_type, rows = NULL,
   if(distribution_type == "normalise_sizeclass" & sizeclass_check(target_motif_distribution) == FALSE){stop("When distribution_type = 'normalise_sizeclass' elements of target_motif_distribution must sum to 1 within each motif size class")}
   if(distribution_type == "normalise_levelsize" & levelsize_check(target_motif_distribution) == FALSE){stop("When distribution_type = 'normalise_levelsize' elements of target_motif_distribution must sum to 1 within each motif levelsize class (a group of motifs with a given number of nodes in the top level and the bottom level)")}
   if(!is.null(rows)){
-    if(!inherits(rows, "integer")){stop("'rows' must be an integer")}
+    if(!inherits(rows, "numeric")){stop("'rows' must be numeric")}
   }
   if(!is.null(columns)){
-    if(!inherits(columns, "integer")){stop("'columns' must be an integer")}
+    if(!inherits(columns, "numeric")){stop("'columns' must be numeric")}
   }
   if(!is.null(connectance)){
     if(!inherits(connectance, "numeric")){stop("'connectance' must be numeric")}
