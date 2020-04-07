@@ -15,6 +15,7 @@ max_motif <- function(target_motif, rows, columns, connectance = NULL, steps = 1
   # run analysis
   M <- generate_matrix_initial(rows = rows, columns = columns, connectance = connectance)$M
   available_mutations <- 1:3
+  unavailable_mutations <- NULL
   if(!is.null(connectance)){unavailable_mutations <- c(1,2)}
   if(!is.null(unavailable_mutations)){available_mutations <- setdiff(available_mutations, unavailable_mutations)}
   sa_maxmotif(mat_initial = M, target_motif = target_motif, six_node = six_node, steps = steps, iterations_at_each_temp = iterations_at_each_temp, alpha = alpha, available_mutations = available_mutations, connectance = connectance)

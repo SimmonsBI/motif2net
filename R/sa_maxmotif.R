@@ -42,7 +42,7 @@ sa_maxmotif <- function(mat_initial, target_motif, six_node, steps = 1000, itera
     Temp <- Temp*alpha # cool the system
   }
   # assemble output
-  optimum_motif_distribution <- mcount(M = mat_optimum, six_node = six_node, normalisation = TRUE, mean_weight = FALSE, standard_dev = FALSE)
+  optimum_motif_distribution <- bmotif::mcount(M = mat_optimum, six_node = six_node, normalisation = TRUE, mean_weight = FALSE, standard_dev = FALSE)
   motif_counts <- setNames(object = optimum_motif_distribution[,"frequency"], nm = paste0("m", 1:nrow(optimum_motif_distribution)))
   return(list(optimum_cost = cost_optimum, optimum_matrix = mat_optimum, motif_counts = motif_counts, record = record))
 }

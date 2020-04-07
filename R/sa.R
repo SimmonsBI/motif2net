@@ -12,7 +12,7 @@ sa <- function(mat_initial, target_motif_distribution, distribution_type, six_no
   Temp <- 1
   # begin optimisation
   tick <- 0
-  # record <- NULL # remove when finished testing
+  record <- NULL # remove when finished testing
   for(i in 1:steps){
     for(j in 1:iterations_at_each_temp){
       tick <- tick + 1
@@ -24,7 +24,7 @@ sa <- function(mat_initial, target_motif_distribution, distribution_type, six_no
         mat_current <- mat_neighbour
         cost_current <- cost_neighbour
       } else if(cost_neighbour >= cost_current){
-        # record <- rbind(record, c(acceptance_probability(cost_current, cost_neighbour, Temp), i)) # remove when finished testing
+        record <- rbind(record, c(acceptance_probability(cost_current, cost_neighbour, Temp), i)) # remove when finished testing
         if(acceptance_probability(cost_current, cost_neighbour, Temp) > runif(1,0,1)){
           mat_current <- mat_neighbour
           cost_current <- cost_neighbour
@@ -42,10 +42,10 @@ sa <- function(mat_initial, target_motif_distribution, distribution_type, six_no
     Temp <- Temp*alpha # cool the system
   }
   # assemble output
-  optimum_motif_distribution <- mcount(M = mat_optimum, six_node = six_node, normalisation = TRUE, mean_weight = FALSE, standard_dev = FALSE)
+  optimum_motif_distribution <- bmotif::mcount(M = mat_optimum, six_node = six_node, normalisation = TRUE, mean_weight = FALSE, standard_dev = FALSE)
   motif_counts <- rbind(target_motif_distribution, optimum_motif_distribution[,distribution_type])
   rownames(motif_counts) <- c("target_motif_distribution","optimum_motif_distribution")
-  return(list(optimum_cost = cost_optimum, optimum_matrix = mat_optimum, motif_counts = motif_counts))
+  return(list(optimum_cost = cost_optimum, optimum_matrix = mat_optimum, motif_counts = motif_counts, record = record))
 }
 
 # optional arguments for how feasible to make it?
