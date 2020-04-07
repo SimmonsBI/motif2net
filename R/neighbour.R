@@ -7,13 +7,13 @@ neighbour <- function(M, available_mutations, connectance){
   empty <- all(M == 0)
   if(empty == TRUE){stop("Matrix is empty. This should never happen. Contact the developer.")}
   if(full == TRUE){
-    available_mutations <- available_mutations[-which(available_mutations %in% c(1,3))] # is matrix is full, cannot add a link
+    available_mutations <- available_mutations[-which(available_mutations %in% c(1,3))] # is matrix is full, cannot add or move a link
   }
-  mutation <- sample(x = available_mutations, size = 1) # pick a random mutation
+  mutation <- sample_vl(x = available_mutations, size = 1) # pick a random mutation
   while_loop_countdown <- 100 # allow 100 attempts at a given mutation before picking a new one
   while(feasible == FALSE){
     if(while_loop_countdown == 0){
-      mutation <- sample(x = available_mutations, size = 1) # pick a new random mutation
+      mutation <- sample_vl(x = available_mutations, size = 1) # pick a new random mutation
       while_loop_countdown <- 100 # reset the countdown
     }
     M <- Mo # reset matrix to original
@@ -47,7 +47,7 @@ neighbour <- function(M, available_mutations, connectance){
       nlinks_to_maintain_connectance <- round((connectance - connectance_after_mutation)*prod(dim(M)))
       if(ncol(M) < nlinks_to_maintain_connectance){stop("ncol(M) < nlinks_to_maintain_connectance, cannot maintain connectance")}
       if(nlinks_to_maintain_connectance > 0){
-        M[nrow(M),sample(1:ncol(M),size = nlinks_to_maintain_connectance)] <- 1
+        M[nrow(M),sample_vl(1:ncol(M),size = nlinks_to_maintain_connectance)] <- 1
       }
     } else if(mutation == 5){ # add a column node while maintaining connectance
       M <- cbind(M, rep(0, nrow(M)))
@@ -55,15 +55,15 @@ neighbour <- function(M, available_mutations, connectance){
       nlinks_to_maintain_connectance <- round((connectance - connectance_after_mutation)*prod(dim(M)))
       if(nrow(M) < nlinks_to_maintain_connectance){stop("nrow(M) < nlinks_to_maintain_connectance, cannot maintain connectance")}
       if(nlinks_to_maintain_connectance > 0){
-        M[sample(1:nrow(M),size = nlinks_to_maintain_connectance),ncol(M)] <- 1
+        M[sample_vl(1:nrow(M),size = nlinks_to_maintain_connectance),ncol(M)] <- 1
       }
     } else if(mutation == 6){ # remove a row node while maintaining connectance
-      M <- M[-sample(1:nrow(M), size = 1),,drop = FALSE]
+      M <- M[-sample_vl(1:nrow(M), size = 1),,drop = FALSE]
       connectance_after_mutation <- sum(M)/prod(dim(M))
       nlinks_to_maintain_connectance <- round((connectance - connectance_after_mutation)*prod(dim(M)))
       if(nlinks_to_maintain_connectance > 0){
         indices <- which(M == 0, arr.ind = TRUE) # indices of 0 elements of matrix i.e. indices that could have links assigned to them
-        cl <- indices[sample(nrow(indices), size = nlinks_to_maintain_connectance, replace = FALSE),,drop = FALSE] # choose indices to allocate as links
+        cl <- indices[sample_vl(nrow(indices), size = nlinks_to_maintain_connectance, replace = FALSE),,drop = FALSE] # choose indices to allocate as links
         for(i in 1:nrow(cl)){ # fill in randomly chosen links
           cr <- cl[i,1]
           cc <- cl[i,2]
@@ -71,7 +71,7 @@ neighbour <- function(M, available_mutations, connectance){
         }
       } else if (nlinks_to_maintain_connectance < 0){
         indices <- which(M == 1, arr.ind = TRUE) # indices of 0 elements of matrix i.e. indices that could have links assigned to them
-        cl <- indices[sample(nrow(indices), size = abs(nlinks_to_maintain_connectance), replace = FALSE),,drop = FALSE] # choose indices to allocate as links
+        cl <- indices[sample_vl(nrow(indices), size = abs(nlinks_to_maintain_connectance), replace = FALSE),,drop = FALSE] # choose indices to allocate as links
         for(i in 1:nrow(cl)){ # fill in randomly chosen links
           cr <- cl[i,1]
           cc <- cl[i,2]
@@ -79,12 +79,12 @@ neighbour <- function(M, available_mutations, connectance){
         }
       }
     } else if(mutation == 7){ # remove a column node while maintaining connectance
-      M <- M[,-sample(1:ncol(M), size = 1), drop = FALSE]
+      M <- M[,-sample_vl(1:ncol(M), size = 1), drop = FALSE]
       connectance_after_mutation <- sum(M)/prod(dim(M))
       nlinks_to_maintain_connectance <- round((connectance - connectance_after_mutation)*prod(dim(M)))
       if(nlinks_to_maintain_connectance > 0){
         indices <- which(M == 0, arr.ind = TRUE) # indices of 0 elements of matrix i.e. indices that could have links assigned to them
-        cl <- indices[sample(nrow(indices), size = nlinks_to_maintain_connectance, replace = FALSE),,drop = FALSE] # choose indices to allocate as links
+        cl <- indices[sample_vl(nrow(indices), size = nlinks_to_maintain_connectance, replace = FALSE),,drop = FALSE] # choose indices to allocate as links
         for(i in 1:nrow(cl)){ # fill in randomly chosen links
           cr <- cl[i,1]
           cc <- cl[i,2]
@@ -92,7 +92,7 @@ neighbour <- function(M, available_mutations, connectance){
         }
       } else if (nlinks_to_maintain_connectance < 0){
         indices <- which(M == 1, arr.ind = TRUE) # indices of 0 elements of matrix i.e. indices that could have links assigned to them
-        cl <- indices[sample(nrow(indices), size = abs(nlinks_to_maintain_connectance), replace = FALSE),,drop = FALSE] # choose indices to allocate as links
+        cl <- indices[sample_vl(nrow(indices), size = abs(nlinks_to_maintain_connectance), replace = FALSE),,drop = FALSE] # choose indices to allocate as links
         for(i in 1:nrow(cl)){ # fill in randomly chosen links
           cr <- cl[i,1]
           cc <- cl[i,2]
